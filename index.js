@@ -14,7 +14,9 @@ app.get("/", (_req, res) => {
   res.sendFile("index.html");
 });
 
-const io = socketIo(server);
+const io = socketIo(server, {
+  transports: ['polling'] // Prefer polling over WebSockets
+});
 const crypto = require("crypto"); // For generating random alphanumeric booking IDs
 
 io.on("connection", (socket) => {
