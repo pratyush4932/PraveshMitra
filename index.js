@@ -7,8 +7,8 @@ const server = http.createServer(app);
 
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/files"));
-const accountSid = "ACb48f445d79f781a7c26ab2cb232969dd";
-const authToken = "883a9d3487bfda47b08e4d150d93d99c";
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 app.get("/", (_req, res) => {
   res.sendFile("index.html");
