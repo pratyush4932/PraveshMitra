@@ -1,15 +1,11 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log("Server listening on port %d", server.address().port);
 });
 
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/files"));
-const accountSid = process.env.ACCOUNT_SID;
-const authToken = process.env.AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
 app.get("/", (_req, res) => {
   res.sendFile("index.html");
 });
@@ -55,6 +51,10 @@ io.on("connection", (socket) => {
         );
 
         try {
+          const accountSid = "AC4366cfdab1912a0229a850e0ce2f11e0";
+          const authToken = "e8319b4768f159e0cc6d22eaa915187b";
+          const client = require("twilio")(accountSid, authToken);
+
           await client.messages
             .create({
               body: `Hello ${name}, your OTP is ${generatedOtp}`,
@@ -71,6 +71,7 @@ io.on("connection", (socket) => {
             });
         } catch (error) {
           socket.emit("botResponse", "Something went wrong, please try again.");
+          console.log(error)
         }
 
         step++;
@@ -107,14 +108,14 @@ io.on("connection", (socket) => {
       }
     } else if (step === 5) {
       foreignerCount = Number(input);
-      newforeignerCount = foreignerCount;
+      newforeignerCount= foreignerCount
       if (foreignerCount >= 0) {
         totalAmount = foreignerCount * 500;
         socket.emit(
           "botResponse",
           `Your total is ${totalAmount}. Do you want to proceed with payment? (yes/no)`
         );
-        step += 3;
+        step +=3;
       } else {
         socket.emit(
           "botResponse",
@@ -136,9 +137,9 @@ io.on("connection", (socket) => {
       below5YearsCount = Number(input);
       if (below5YearsCount >= 0) {
         // Calculate totals
-        if (foreignerCount === 0) {
+        
           totalAmount = above5YearsCount * 79 + below5YearsCount * 49;
-        }
+        
 
         socket.emit(
           "botResponse",
@@ -148,9 +149,9 @@ io.on("connection", (socket) => {
           "botResponse",
           `Your total is ${totalAmount}. Do you want to proceed with payment? (yes/no)`
         );
-        step += 2;
+        step+=2;
       } else {
-        console.log(input);
+        console.log(input)
         socket.emit(
           "botResponse",
           "Invalid input. Please enter the number of persons below 5 years."
@@ -163,9 +164,15 @@ io.on("connection", (socket) => {
 
         // Send SMS with booking details
         try {
+          const accountSid = "AC4366cfdab1912a0229a850e0ce2f11e0";
+          const authToken = "e8319b4768f159e0cc6d22eaa915187b";
+          const client = require("twilio")(accountSid, authToken);
+
           await client.messages
             .create({
-              body: `Booking ID: ${bookingId}\nName: ${name}\nTotal Persons: ${newforeignerCount}\nTotal Amount: ${totalAmount}`,
+              body: `Booking ID: ${bookingId}\nName: ${name}\nTotal Persons: ${
+                newforeignerCount
+              }\nTotal Amount: ${totalAmount}`,
               to: `+91${mobileNumber}`, // Use the user's mobile number
               from: "+19493935392", // Your Twilio number
             })
@@ -185,6 +192,7 @@ io.on("connection", (socket) => {
             "Your payment is being processed. Thank you for booking with us."
           );
           step = 0; // Reset or handle further steps as needed
+          foreignerCount=0;
         } catch (error) {
           socket.emit(
             "botResponse",
@@ -197,12 +205,14 @@ io.on("connection", (socket) => {
           "Payment not processed. If you need further assistance, please let us know."
         );
         step = 0; // Reset or handle further steps as needed
+        foreignerCount=0
       } else {
         socket.emit(
           "botResponse",
           "Invalid response. Please answer 'yes' or 'no'."
         );
       }
+      
     } else if (step === 9) {
       if (input.toLowerCase() === "yes") {
         // Generate a random alphanumeric booking ID
@@ -210,6 +220,10 @@ io.on("connection", (socket) => {
 
         // Send SMS with booking details
         try {
+          const accountSid = "AC4366cfdab1912a0229a850e0ce2f11e0";
+          const authToken = "e8319b4768f159e0cc6d22eaa915187b";
+          const client = require("twilio")(accountSid, authToken);
+
           await client.messages
             .create({
               body: `Booking ID: ${bookingId}\nName: ${name}\nTotal Persons: ${
@@ -234,6 +248,8 @@ io.on("connection", (socket) => {
             "Your payment is being processed. Thank you for booking with us."
           );
           step = 0; // Reset or handle further steps as needed
+          below5YearsCount=0;
+          above5YearsCount=0;
         } catch (error) {
           socket.emit(
             "botResponse",
@@ -246,15 +262,20 @@ io.on("connection", (socket) => {
           "Payment not processed. If you need further assistance, please let us know."
         );
         step = 0; // Reset or handle further steps as needed
+        below5YearsCount=0;
+        above5YearsCount=0;
       } else {
         socket.emit(
           "botResponse",
           "Invalid response. Please answer 'yes' or 'no'."
         );
       }
+      
     } else {
       socket.emit("botResponse", "Invalid command. Please type 'book ticket'.");
     }
+    
+
   });
 
   socket.on("disconnect", () => {
