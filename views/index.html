@@ -61,7 +61,10 @@
     <button onclick="sendMessage()">Send</button> -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
+   const socket = io(server, {
+  transports: ['polling'], // Fallback to long polling
+});
+
         socket.on('botResponse', (message) => {
             const input = document.getElementById('userInput');
             const chat = document.getElementById('chatContainer');
