@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Ticket Booking Bot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div id="botContainer">
+        <div id="chatBot_Icon">
+            <img id="chatBotImg" src="/images/pngwing.com.png" alt="">
+        </div>
+        <div id="chat">
+            <div id="chatContainer">
+                <div class="botTextBox">
+                    <div class="textAvatar">
+                        <img class="textAvatarImg" src="/images/pngwing.com.png" alt="">
+                    </div>
+                    <div class="Bubble">
+                        <img class="bubbleImage" src="/images/Bubble.gif" alt="">
+                    </div>
+                    <div class="textContentBot">
+                        <div style="max-width: 100%; max-height: 100%;">
+                            Hi. I am PraveshMitra, your ticket booking assistant.
+                        </div>
+                    </div>
+                </div>
+                <div class="botTextBox">
+                    <div class="textAvatar">
+                        <img class="textAvatarImg" src="/images/pngwing.com.png" alt="">
+                    </div>
+                    <div class="Bubble">
+                        <img class="bubbleImage" src="/images/Bubble.gif" alt="">
+                    </div>
+                    <div class="textContentBot">
+                        <div style="max-width: 100%; max-height: 100%;">
+                            Type "book ticket" to start the booking process.
+                        </div>
+                    </div>
+                </div>
+                <!-- <div>
+                    <div class="textAvatar">
+                        <img class="textAvatarImg" src="/user (2).png" alt="">
+                    </div>
+                    <div class="textContent">
+                        <div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Type "book ticket" to start the booking process. -->
+            </div>
+            <div id="input">
+                <div id="inputContainer">
+                    <div id="userAvaterHolder">
+                        <img src="/images/user.png" id="userAvatar" alt="">
+                    </div>
+                    <input type="text" id="userInput" placeholder="Enter your message" autofocus>
+                    <div id="sendHolder">
+                        <img src="/images/send.png" id="sendButton" onclick="sendMessage()" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </div>
+    <input type="text" id="userInput" placeholder="Enter your message">
+    <button onclick="sendMessage()">Send</button> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        socket.on('botResponse', (message) => {
+            const input = document.getElementById('userInput');
+            const chat = document.getElementById('chatContainer');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('botTextBox');
+            newMessage.innerHTML = `<div class="textAvatar">
+                    <img class="textAvatarImg" src="/images/pngwing.com.png" alt="">
+                </div>
+                <div class="Bubble">
+                        <img class="bubbleImage" src="/images/Bubble.gif" alt="">
+                    </div>
+                <div class="textContentBot">
+                    <div>
+                        ${message}
+                    </div>
+                </div>`;
+            chat.appendChild(newMessage);
+            scrollToBottom();
+            input.focus();
+        });
+        function scrollToBottom() {
+            const container = document.getElementById('chatContainer');
+            container.scrollTop = container.scrollHeight;
+            console.log("scroll: " + container.scrollHeight);
+        }
+        function sendMessage() {
+            const userInput = document.getElementById('userInput').value;
+            if (!userInput) return;
+            const chat = document.getElementById('chatContainer');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('userTextBox');
+            newMessage.innerHTML = `<div class="textAvatar">
+                    <img class="textAvatarImg" src="/images/user.png" alt="">
+                </div>
+                <div class="textContentUser">
+                    <div>
+                        ${userInput}
+                    </div>
+                </div>`;
+            chat.appendChild(newMessage);
+            socket.emit('userInput', userInput);
+            document.getElementById('userInput').value = ''; // Clear input field
+            console.log('box cleared');
+            scrollToBottom();
+        }
+        const input = document.getElementById('userInput');
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>

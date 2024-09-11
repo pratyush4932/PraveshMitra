@@ -1,0 +1,21 @@
+{
+  "name": "recognito",
+  "version": "1.0.0",
+  "description": "A node app for voice recognition ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Sujan Chhetri",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.17.1",
+    "apiai": "^4.0.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "dotenv-extended": "^2.7.1",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "twilio": "^5.3.0"
+  }
+}

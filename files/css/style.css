@@ -1,0 +1,218 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-image: url("/images/MuseumImage.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+#botContainer{
+    display:flex;
+    flex-direction: column;
+    width: 46%;
+    height: 96%;
+    align-items: center;
+    justify-content: center;
+    background-color: hsla(0, 0%, 11%, 0.692);
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    gap: 2%;
+    -webkit-backdrop-filter: blur(10px);
+}
+#chatBot_Icon {
+    height: 20%;
+}
+#chatBotImg {
+    height: 100%;
+}
+#chat{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    gap: 2%;
+}
+.textAvatar {
+    display: flex;
+    height: 8vh;
+    width: 10%;
+    align-items: center;
+    justify-content: center;
+}
+.textAvatarImg {
+    height: 80%;
+}
+.Bubble{
+    display: flex;
+    filter: invert(100%);
+    height: 8vh;
+    animation-name: typeAnim1;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.bubbleImage{
+    max-width: 100%;
+    max-height: 80%;
+}
+.botTextBox{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+    gap: 1%;
+    animation-name: chatAnim;
+    animation-duration: 0.5s;
+}
+.userTextBox{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    height: max-content;
+    gap: 1%;
+    animation-name: chatAnim;
+    animation-duration: 0.5s;
+}
+.textContentBot{
+    display: flex;
+    flex-basis: 60%;
+    background-color: #ffffffb0;
+    border-radius:20px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1% 2%;
+    max-height: max-content;
+    animation-name: typeAnim2;
+    animation-duration: 2s;
+}
+.textContentUser{
+    display: flex;
+    flex-basis: 60%;
+    background-color: #ffd7d7b0;
+    border-radius:20px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1% 2%;
+    max-height: max-content;
+}
+.textContent div{
+    margin: 5%;
+}
+#chatContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90%;
+    width: 100%;
+    height: 100%;
+    gap: 4%;
+    overflow-y: auto;
+}
+#chatContainer::-webkit-scrollbar {
+    display: none;
+}
+#input{
+    width: 100%;
+    height: 10%;
+}
+#inputContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    gap: 2%;
+}
+#userAvaterHolder{
+    display: flex;
+    flex-basis: 10%;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#userAvatar{
+    max-height: 100%;
+    max-width: 100%;
+}
+#userInput{
+    width: 80%;
+    height: 100%;
+    border-radius: 20px;
+    border: none;
+    padding-left: 2%;
+    padding-right: 2%;
+    overflow-wrap: break-word;
+}
+#sendHolder{
+    display: flex;
+    flex-basis: 10%;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#sendButton{
+    max-width: 100%;
+    max-height: 100%;
+    color: white;
+    border: none;
+}
+@keyframes chatAnim{
+    0%{
+        opacity: 0;
+        transform: translateY(20%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@keyframes typeAnim1{
+    0%{
+        width: 0%;
+        height: 0%;
+        opacity: 0;
+    }
+    5%{ 
+        width: 100%;
+        height: 8vh;
+        opacity: 0;
+    }
+    80%{
+        width: 100%;
+        height: 8vh;
+        opacity: 1;
+    }
+    95%{
+        width: 100%;
+        height: 8vh;
+        opacity: 0;
+    }
+    100%{
+        width: 0%;
+        height: 8vh;
+        opacity: 0;
+    }
+}
+@keyframes typeAnim2{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    75%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+    }
+}
