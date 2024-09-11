@@ -1,22 +1,20 @@
 const express = require("express");
 const app = express();
-const http = require('http');
-const socketIo = require('socket.io');
+const http = require("http");
+const socketIo = require("socket.io");
 require("dotenv").config();
 const server = http.createServer(app);
 
 app.use(express.static(__dirname + "/views"));
 app.use(express.static(__dirname + "/files"));
-const accountSid = process.env.ACCOUNT_SID;
-const authToken = process.env.AUTH_TOKEN;
+const accountSid = "ACb48f445d79f781a7c26ab2cb232969dd";
+const authToken = "f9c9714dda152985c629fa61d3c28b5e";
 const client = require("twilio")(accountSid, authToken);
 app.get("/", (_req, res) => {
   res.sendFile("index.html");
 });
 
-const io = socketIo(server, {
-  transports: ['polling'] // Prefer polling over WebSockets
-});
+const io = socketIo(server);
 const crypto = require("crypto"); // For generating random alphanumeric booking IDs
 
 io.on("connection", (socket) => {
@@ -29,6 +27,7 @@ io.on("connection", (socket) => {
   let foreignerCount = 0; // To store the count of foreigners
   let above5YearsCount = 0;
   let below5YearsCount = 0;
+
   let totalAmount = 0; // To store the total amount
 
   socket.on("userInput", async (input) => {
@@ -61,7 +60,7 @@ io.on("connection", (socket) => {
             .create({
               body: `Hello ${name}, your OTP is ${generatedOtp}`,
               to: `+91${mobileNumber}`, // Use the user's mobile number
-              from: "+19493935392", // Your Twilio number
+              from: "+12672811527", // Your Twilio number
             })
             .then((message) => console.log("OTP sent, SID:", message.sid))
             .catch((error) => {
@@ -86,6 +85,10 @@ io.on("connection", (socket) => {
       const userOtp = input;
       if (Number(userOtp) === generatedOtp) {
         socket.emit("botResponse", "OTP successfully verified.");
+        socket.emit(
+          "botResponse",
+          `Here are the Prices:<br>General Ticket: Rs.79<br>General Ticket(Below 5years): Rs.49<br>Foreigners Ticket: Rs.500`
+        );
         socket.emit("botResponse", "Are you a foreigner? (yes/no)");
         step++;
       } else {
@@ -169,7 +172,7 @@ io.on("connection", (socket) => {
             .create({
               body: `Booking ID: ${bookingId}\nName: ${name}\nTotal Persons: ${newforeignerCount}\nTotal Amount: ${totalAmount}`,
               to: `+91${mobileNumber}`, // Use the user's mobile number
-              from: "+19493935392", // Your Twilio number
+              from: "+12672811527", // Your Twilio number
             })
             .then((message) =>
               console.log("Booking SMS sent, SID:", message.sid)
@@ -218,7 +221,7 @@ io.on("connection", (socket) => {
                 above5YearsCount + below5YearsCount
               }\nTotal Amount: ${totalAmount}`,
               to: `+91${mobileNumber}`, // Use the user's mobile number
-              from: "+19493935392", // Your Twilio number
+              from: "+12672811527", // Your Twilio number
             })
             .then((message) =>
               console.log("Booking SMS sent, SID:", message.sid)
